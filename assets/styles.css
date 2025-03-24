@@ -1,0 +1,252 @@
+:root {
+  --text-color: #ffffff;
+  --bg-color: #111111;
+  --spotlight-size: 150px;
+  --particle-count: 80;
+  --cursor-influence-radius: 150px;
+  --cursor-push-strength: 0.5;
+  --particle-base-opacity: 0.5;
+  --particle-max-opacity: 1;
+  --connection-base-opacity: 0.2;
+  --connection-max-opacity: 0.6;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+}
+
+.store-name-container {
+  position: relative;
+  text-align: center;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.store-name-container.move-up {
+  position: fixed;
+  top: 1rem;        /* Changed from 2rem to 1rem */
+  left: 1rem;       /* Changed from 2rem to 1rem */
+  transform: scale(0.5); /* Changed from 0.7 to 0.5 (50% of original size) */
+  padding: 0;
+  z-index: 1000;
+}
+
+.store-name-outline {
+  font-size: 5rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+  -webkit-text-stroke: 1px var(--text-color);
+  color: transparent;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.store-name-container.move-up .store-name-outline {
+  font-size: 5rem; /* Keep the same size */
+  -webkit-text-stroke-width: 1px; /* Keep the same stroke width */
+}
+
+.store-name-filled {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem; /* Match the outline size */
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--text-color);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease-out;
+  z-index: 0;
+}
+
+.content-wrapper {
+  flex: 1;
+  display: none;
+}
+
+.background-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.password-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 300px;
+  opacity: 0;
+  transition: opacity 0.3s 0.5s;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+.password-container.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.password-submit {
+  margin-top: 1.5rem;
+  padding: 10px 25px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.password-submit:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.password-error {
+  color: #ff6666;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  display: none;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.password-error.visible {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .store-name-outline {
+    font-size: 3rem;
+  }
+
+  .store-name-container.move-up .store-name-outline {
+    font-size: 3rem; /* Keep the same size on mobile */
+    -webkit-text-stroke-width: 1px; /* Keep the same stroke width */
+  }
+
+  .store-name-filled {
+    font-size: 3rem; /* Match the outline size on mobile */
+  }
+
+  .header {
+    height: 40vh;
+  }
+
+  :root {
+    --spotlight-size: 80px;
+    --particle-count: 40;
+    --cursor-influence-radius: 100px;
+  }
+
+  .password-container {
+    width: 80%;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(-55%, -50%); }
+  75% { transform: translate(-45%, -50%); }
+}
+
+.product-focused {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 400px; /* Reduce max-width for a more compact layout */
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.product-image {
+  max-width: 200px; /* Smaller image size */
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem; /* Reduce margin */
+}
+
+.product-details {
+  width: 100%;
+}
+
+.product-title {
+  font-size: 1.5rem; /* Slightly smaller title */
+  font-weight: 300;
+  margin: 0 0 0.5rem;
+}
+
+.product-price {
+  font-size: 1.25rem; /* Slightly smaller price */
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 1.5rem;
+}
+
+.product-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.product-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.error {
+  color: #ff6666;
+  text-align: center;
+  margin-top: 2rem;
+}

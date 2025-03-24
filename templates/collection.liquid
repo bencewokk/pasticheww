@@ -1,0 +1,20 @@
+<h1>{{ collection.title }}</h1>
+
+<div class="product-list">
+  {% for product in collection.products %}
+    <div class="product-card">
+      <a href="{{ product.url }}">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: '300x300' }}"
+            alt="{{ product.title }}"
+            width="300"
+            height="300"
+          >
+        {% endif %}
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.price | money }}</p>
+      </a>
+    </div>
+  {% endfor %}
+</div>

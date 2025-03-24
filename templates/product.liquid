@@ -1,0 +1,21 @@
+<div class="product">
+  {% if product.featured_image %}
+    <img src="{{ product.featured_image | image_url: '600x600' }}" alt="{{ product.title }}" width="600" height="600">
+  {% endif %}
+
+  <h1>{{ product.title }}</h1>
+  <p>{{ product.price | money }}</p>
+
+  <div>{{ product.description }}</div>
+
+  {% form 'product', product %}
+    <select name="id">
+      {% for variant in product.variants %}
+        <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {% endfor %}
+    </select>
+
+    <input type="number" name="quantity" value="1" min="1">
+    <button type="submit">Add to cart</button>
+  {% endform %}
+</div>

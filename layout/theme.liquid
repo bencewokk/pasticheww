@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="{{ shop.locale }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ shop.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ 'styles.css' | asset_url }}">
+    {{ content_for_header }}
+  </head>
+  <body>
+    <canvas class="background-particles" id="particleCanvas"></canvas>
+
+    <header class="header">
+      <div class="store-name-container" id="storeNameContainer">
+        <h1 class="store-name-outline">{{ shop.name }}</h1>
+        <h1 class="store-name-filled" id="storeNameFilled">{{ shop.name }}</h1>
+      </div>
+
+      <!-- Move password container outside store-name-container -->
+      <div class="password-container" id="passwordContainer">
+        <input
+          type="password"
+          id="passwordInput"
+          class="password-input"
+          placeholder="Enter Password"
+          autocomplete="off"
+        >
+        <button id="passwordSubmit" class="password-submit">Unlock →</button>
+        <p id="passwordError" class="password-error">Incorrect Code</p>
+      </div>
+    </header>
+
+    <div class="content-wrapper" id="contentWrapper">
+      <div class="container">
+        {{ content_for_layout }}
+      </div>
+    </div>
+
+    <script src="{{ 'scripts.js' | asset_url }}" defer></script>
+  </body>
+</html>
