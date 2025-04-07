@@ -1,0 +1,76 @@
+/* Sidebar styles */
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 900; /* Keep this value */
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 290px;
+    height: 100%;
+    background-color: var(--bg-color);
+    border-right: 1px solid var(--text-color);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+    padding-top: 100px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 900; /* Match sidebar-container */
+}
+
+/* Update the selector to show sidebar */
+.store-name-container.move-up ~ .sidebar-container .sidebar {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.5s ease;
+}
+
+/* Add transition for authenticated state */
+.authenticated .sidebar {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    padding: 1rem 2rem;
+}
+
+.sidebar-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.sidebar-nav a:hover {
+    color: rgba(var(--text-color), 0.7);
+}
+
+/* Adjust content wrapper to account for sidebar */
+.content-wrapper {
+    margin-left: 250px;
+    transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.store-name-container.move-up ~ .sidebar-container ~ .content-wrapper {
+    margin-left: 250px;
+}
+

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Password Logic
-  const PASSWORD = 'YUNG2025';
+  const PASSWORD = 'teszt';
   const storeNameContainer = document.getElementById('storeNameContainer');
   const passwordContainer = document.getElementById('passwordContainer');
   const passwordInput = document.getElementById('passwordInput');
@@ -8,24 +8,45 @@ document.addEventListener('DOMContentLoaded', function () {
   const passwordError = document.getElementById('passwordError');
   const contentWrapper = document.getElementById('contentWrapper');
   let isPasswordVisible = false;
+  const sidebarContainer = document.getElementById('sidebarContainer');
+
+  // Show sidebar when store name moves up
+  storeNameContainer.addEventListener('click', function () {
+    if (!isPasswordVisible && sessionStorage.getItem('siteAccess') !== 'granted') {
+      // Your existing code...
+      sidebarContainer.style.pointerEvents = 'auto'; // Enable sidebar interaction
+    }
+  });
+
+  // Hide sidebar initially
+  sidebarContainer.style.pointerEvents = 'none';
+
+  // Show sidebar when authenticated
+  if (sessionStorage.getItem('siteAccess') === 'granted') {
+    sidebarContainer.style.pointerEvents = 'auto';
+  }
 
   // Check existing access
   if (sessionStorage.getItem('siteAccess') === 'granted') {
     contentWrapper.style.display = 'block';
     storeNameContainer.classList.add('move-up');
     passwordContainer.style.display = 'none';
-    loadProducts(); // Load products if access is already granted
+    document.body.classList.add('authenticated');
+    document.documentElement.style.setProperty('--invert-filter', '100%');
+    setTimeout(() => {
+      loadProducts(); // Load products if access is already granted after a 500ms delay
+    }, 500);
   }
 
   // Toggle password input on title click
   storeNameContainer.addEventListener('click', function () {
     if (!isPasswordVisible && sessionStorage.getItem('siteAccess') !== 'granted') {
       storeNameContainer.classList.add('move-up');
-
+      sidebarContainer.style.pointerEvents = 'auto';
       setTimeout(() => {
         passwordContainer.classList.add('visible');
         passwordInput.focus();
-      }, 500); // Match title animation duration
+      }, 250); // Match title animation duration
 
       isPasswordVisible = true;
     }
@@ -37,7 +58,11 @@ document.addEventListener('DOMContentLoaded', function () {
       sessionStorage.setItem('siteAccess', 'granted');
       passwordContainer.classList.remove('visible');
       contentWrapper.style.display = 'block';
-      loadProducts(); // Load products after password is accepted
+      document.body.classList.add('authenticated');
+      document.documentElement.style.setProperty('--invert-filter', '100%');
+      setTimeout(() => {
+        loadProducts(); // Load products after password is accepted with a slight buffer
+      }, 500);
     } else {
       passwordError.style.display = 'block';
       passwordError.classList.add('visible');
@@ -69,8 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   `;
   document.head.appendChild(styleSheet);
-
-  // Function to load store products
   function loadProducts() {
     fetch('/collections/all/products.json')
       .then((response) => response.json())
@@ -78,28 +101,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const products = data.products;
 
         if (products.length > 0) {
-          const product = products[0]; // Get the first product
-
-          // Generate HTML for the single product
-          const productHTML = `
-            <div class="product-focused">
-              <img src="${product.images[0].src}" alt="${product.title}" class="product-image">
-              <div class="product-details">
-                <h2 class="product-title">${product.title}</h2>
-                <p class="product-price">${product.variants[0].price}</p>
-                <button class="product-button" data-product-id="${product.variants[0].id}">Add to Cart</button>
-              </div>
-            </div>
-          `;
-
-          // Insert product into the content wrapper
+          // Create grid container with fade-in animation
           contentWrapper.innerHTML = `
-            <div class="container">
-              ${productHTML}
+            <div class="product-grid">
+              ${products
+                .map(
+                  (product, index) => `
+                <div class="product-card" style="animation-delay: ${index * 0.1}s">
+                  <img src="${product.images[0]?.src || ''}" alt="${product.title}" class="product-image">
+                  <div class="product-details">
+                    <h3 class="product-title">${product.title}</h3>
+                    <p class="product-price">Ft ${Math.round(product.variants[0]?.price || 0).toLocaleString(
+                      'en-US'
+                    )}</p>
+                    <button class="product-button" data-product-id="${
+                      product.variants[0]?.id || ''
+                    }">Add to Cart</button>
+                  </div>
+                </div>
+              `
+                )
+                .join('')}
             </div>
           `;
+          initializeProductEventListeners();
         } else {
-          // If no products are found
           contentWrapper.innerHTML = `<p class="error">No products available.</p>`;
         }
       })
@@ -109,25 +135,192 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  function initializeProductEventListeners() {
+    const buttons = document.querySelectorAll('.product-button');
+    buttons.forEach((button) => {
+      button.addEventListener('click', function (e) {
+        e.preventDefault();
+        const productId = this.dataset.productId;
+        if (productId) {
+          addToCart(productId);
+        }
+      });
+    });
+  }
+
+  // Cart Variables (ensure these elements exist in your sidebar HTML)
+  let cart = null;
+  const cartItemsContainer = document.querySelector('.cart-items');
+  const cartCount = document.querySelector('.cart-count');
+  const totalPrice = document.querySelector('.total-price');
+  const checkoutButton = document.querySelector('.checkout-button');
+
+  // Add event listener to checkout button
+  if (checkoutButton) {
+    checkoutButton.addEventListener('click', initiateCheckout);
+  }
+
+  // Function to fetch the cart data from Shopify
+  async function fetchCart() {
+    try {
+      const response = await fetch('/cart.js');
+      cart = await response.json();
+      updateCartDisplay();
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+    }
+  }
+
+  // Update the sidebar display for the cart
+  function updateCartDisplay() {
+    if (!cart) return;
+
+    // Cart display snippet
+    cartItemsContainer.innerHTML = cart.items
+      .map(
+        (item) => `
+      <div class="cart-item" data-key="${item.key}">
+        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+        <div class="cart-item-details">
+          <h4 class="cart-item-title">${item.product_title}</h4>
+          <p class="cart-item-price">Ft ${Math.round(item.price / 100).toLocaleString('en-US')}</p>
+          <div class="quantity-controls">
+            <button class="quantity-decrease">-</button>
+            <span>${item.quantity}</span>
+            <button class="quantity-increase">+</button>
+          </div>
+          <button class="remove-item">Remove</button>
+        </div>
+      </div>
+    `
+      )
+      .join('');
+
+    cartCount.textContent = `${cart.item_count} ${cart.item_count === 1 ? 'item' : 'items'}`;
+    totalPrice.textContent = `Ft ${Math.round(cart.total_price / 100).toLocaleString('en-US')}`;
+
+    // Attach event listeners for quantity changes
+    document.querySelectorAll('.quantity-increase').forEach((button) => {
+      button.addEventListener('click', updateQuantity);
+    });
+
+    document.querySelectorAll('.quantity-decrease').forEach((button) => {
+      button.addEventListener('click', updateQuantity);
+    });
+
+    document.querySelectorAll('.remove-item').forEach((button) => {
+      button.addEventListener('click', removeItem);
+    });
+
+    // Enable/disable checkout button based on cart contents
+    if (checkoutButton) {
+      checkoutButton.disabled = cart.item_count === 0;
+    }
+  }
+
+  // Handle quantity update
+  async function updateQuantity(e) {
+    const cartItemEl = e.target.closest('.cart-item');
+    const itemKey = cartItemEl.dataset.key;
+    const currentQuantity = parseInt(cartItemEl.querySelector('.quantity-controls span').textContent);
+    const newQuantity = e.target.classList.contains('quantity-increase') ? currentQuantity + 1 : currentQuantity - 1;
+
+    if (newQuantity < 1) return; // Prevent zero or negative
+
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: itemKey, quantity: newQuantity }),
+      });
+
+      cart = await response.json();
+      updateCartDisplay();
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  }
+
+  // Handle removal of an item
+  async function removeItem(e) {
+    const itemKey = e.target.closest('.cart-item').dataset.key;
+
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: itemKey, quantity: 0 }),
+      });
+
+      cart = await response.json();
+      updateCartDisplay();
+    } catch (error) {
+      console.error('Error removing item:', error);
+    }
+  }
+
+  // Modify your addToCart to update the cart display
   function addToCart(productId) {
-    fetch('/cart/add.js', {
+    const formData = { items: [{ id: productId, quantity: 1 }] };
+
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: productId, // Product variant ID
-        quantity: 1, // Quantity to add
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
     })
       .then((response) => response.json())
-      .then((data) => {
-        alert('Product added to cart!'); // Success message
+      .then(() => {
+        // Fetch the latest cart
+        fetchCart();
+        // Provide visual feedback on the button
+        const button = document.querySelector(`[data-product-id="${productId}"]`);
+        if (button) {
+          const originalText = button.textContent;
+          button.textContent = 'Added!';
+          button.style.backgroundColor = 'var(--text-color)';
+          button.style.color = 'var(--bg-color)';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
+            button.style.color = '';
+          }, 2000);
+        }
       })
       .catch((error) => {
         console.error('Error adding to cart:', error);
-        alert('Failed to add product to cart. Please try again.'); // Error message
+        const button = document.querySelector(`[data-product-id="${productId}"]`);
+        if (button) {
+          const originalText = button.textContent;
+          button.textContent = 'Error!';
+          button.style.backgroundColor = '#ff6666';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.backgroundColor = '';
+          }, 2000);
+        }
       });
+  }
+
+  // Modify your checkout functionality:
+  function initiateCheckout() {
+    console.log('Checkout initiated!');
+    if (checkoutButton) {
+      checkoutButton.textContent = 'Processing...';
+      checkoutButton.disabled = true;
+    }
+    // Use a slight delay to show the "Processing..." text before redirecting
+    setTimeout(() => {
+      window.location.href = '/checkout';
+    }, 300);
+  }
+
+  // Initialize cart if user is authenticated
+  if (sessionStorage.getItem('siteAccess') === 'granted') {
+    fetchCart();
   }
 
   // Particle System (unchanged from previous version)
@@ -355,11 +548,4 @@ document.addEventListener('DOMContentLoaded', function () {
     resizeCanvas();
     initParticles();
   });
-});
-
-document.addEventListener('click', function (e) {
-  if (e.target.classList.contains('product-button')) {
-    const productId = e.target.dataset.productId; // Get the product ID from the button
-    addToCart(productId); // Call the addToCart function
-  }
 });

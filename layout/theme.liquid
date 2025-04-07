@@ -31,10 +31,46 @@
       </div>
     </header>
 
+    <div class="sidebar-container" id="sidebarContainer">
+      <div class="sidebar">
+        <nav class="sidebar-nav">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">Cart</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <!-- Cart Section -->
+        <div class="cart-section">
+          <div class="cart-header">
+            <h3>Your Cart</h3>
+            <span class="cart-count">0 items</span>
+          </div>
+          <div class="cart-items"></div>
+          <div class="cart-footer">
+            <div class="cart-total">
+              <span>Total:</span>
+              <span class="total-price">$0.00</span>
+            </div>
+            <button class="checkout-button">Checkout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="content-wrapper" id="contentWrapper">
       <div class="container">
         {{ content_for_layout }}
       </div>
+    </div>
+
+    <div class="created-by">
+      <p>
+        site created by <span class="creator-name">bencewok</span>
+        <a href="https://instagram.com/bencewok" class="creator-link" target="_blank">instagram</a>
+        <a href="https://bencewok.com" class="creator-link" target="_blank">bencewokk.com</a>
+      </p>
     </div>
 
     <script src="{{ 'scripts.js' | asset_url }}" defer></script>

@@ -1,0 +1,26 @@
+:root {
+    --text-color: #ffffff;
+    --bg-color: #111111;
+    --spotlight-size: 150px;
+    --particle-count: 120;
+    --cursor-influence-radius: 150px;
+    --cursor-push-strength: 0.5;
+    --particle-base-opacity: 0.5;
+    --particle-max-opacity: 1;
+    --connection-base-opacity: 0.2;
+    --connection-max-opacity: 0.6;
+    --invert-filter: 0%;
+}
+
+.authenticated {
+    --text-color: #111111;
+    --bg-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --spotlight-size: 80px;
+        --particle-count: 40;
+        --cursor-influence-radius: 100px;
+    }
+}
