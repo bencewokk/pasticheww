@@ -69,10 +69,10 @@
       <p>
         site created by <span class="creator-name">bencewok</span>
         <a href="https://instagram.com/bencewok" class="creator-link" target="_blank">instagram</a>
-        <a href="https://bencewok.com" class="creator-link" target="_blank">bencewokk.com</a>
+        {% comment %} <a href="https://bencewok.com" class="creator-link" target="_blank">bencewokk.com</a> {% endcomment %}
       </p>
     </div>
 
-    <script src="{{ 'scripts.js' | asset_url }}" defer></script>
+    <script type="module" src="{{ 'scripts.js' | asset_url }}"></script>
   </body>
 </html>

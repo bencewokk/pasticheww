@@ -6,9 +6,8 @@
     width: 100%;
     height: 100vh;
     pointer-events: none;
-    z-index: 900; /* Keep this value */
+    z-index: 900;
 }
-
 .sidebar {
     position: fixed;
     top: 0;
@@ -18,13 +17,14 @@
     background-color: var(--bg-color);
     border-right: 1px solid var(--text-color);
     transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: auto;
     padding-top: 100px;
     opacity: 0;
     visibility: hidden;
-    z-index: 900; /* Match sidebar-container */
+    z-index: 900;
 }
+
 
 /* Update the selector to show sidebar */
 .store-name-container.move-up ~ .sidebar-container .sidebar {
@@ -73,4 +73,3 @@
 .store-name-container.move-up ~ .sidebar-container ~ .content-wrapper {
     margin-left: 250px;
 }
-
