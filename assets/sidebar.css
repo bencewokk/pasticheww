@@ -7,8 +7,9 @@
     height: 100vh;
     pointer-events: none;
     z-index: 900;
-}
-.sidebar {
+  }
+  
+  .sidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -23,53 +24,283 @@
     opacity: 0;
     visibility: hidden;
     z-index: 900;
-}
-
-
-/* Update the selector to show sidebar */
-.store-name-container.move-up ~ .sidebar-container .sidebar {
+    overflow-y: auto; /* Allow scrolling if sidebar content is too tall */
+  }
+  
+  /* Update the selector to show sidebar */
+  .store-name-container.move-up ~ .sidebar-container .sidebar,
+  .authenticated .sidebar {
     transform: translateX(0);
     opacity: 1;
     visibility: visible;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.5s ease;
-}
-
-/* Add transition for authenticated state */
-.authenticated .sidebar {
-    transform: translateX(0);
-    opacity: 1;
-    visibility: visible;
-}
-
-.sidebar-nav ul {
+  }
+  
+  .sidebar-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.sidebar-nav li {
+  }
+  
+  .sidebar-nav li {
     padding: 1rem 2rem;
-}
-
-.sidebar-nav a {
+  }
+  
+  .sidebar-nav a {
     color: var(--text-color);
     text-decoration: none;
     font-weight: 300;
     font-size: 1.2rem;
     transition: color 0.3s ease;
-}
-
-.sidebar-nav a:hover {
-    color: rgba(var(--text-color), 0.7);
-}
-
-/* Adjust content wrapper to account for sidebar */
-.content-wrapper {
-    margin-left: 250px;
+  }
+  
+  .sidebar-nav a:hover {
+    color: rgba(var(--text-color-rgb, 0, 0, 0), 0.7);
+  }
+  
+  /* Mobile menu toggle button */
+  .mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background-color: var(--bg-color);
+    border: 1px solid var(--text-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  
+  /* Mobile menu overlay */
+  .mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 899;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Shopping cart styles - fixed for mobile */
+  .cart-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--text-color);
+    padding: 1rem;
+    z-index: 950;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .cart-visible .cart-container {
+    transform: translateY(0);
+  }
+  
+  .cart-title {
+    margin-top: 0;
+    font-weight: 400;
+  }
+  
+  .cart-items {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .checkout-button {
+    width: 100%;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .checkout-button:hover {
+    background-color: #333;
+  }
+  
+  /* Adjust content wrapper to account for sidebar */
+  .content-wrapper {
     transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.store-name-container.move-up ~ .sidebar-container ~ .content-wrapper {
-    margin-left: 250px;
-}
+    display: flex !important; /* Override display: none */
+    padding-left: 0;
+    flex-direction: column;
+  }
+  
+  .authenticated .content-wrapper,
+  .store-name-container.move-up ~ .sidebar-container ~ .content-wrapper {
+    margin-left: 290px; /* Match sidebar width */
+  }
+  
+  /* Product grid styles with responsive adjustments */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+    border: 1px solid rgba(var(--text-color-rgb, 0, 0, 0), 0.1);
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Media queries for responsive design */
+  @media screen and (max-width: 1200px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      padding: 1.5rem;
+    }
+  }
+  
+  @media screen and (max-width: 992px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+  }
+  
+  /* Mobile adjustments - sidebar disappears */
+  @media screen and (max-width: 768px) {
+    /* Hide sidebar by default on mobile */
+    .sidebar {
+      width: 250px;
+      transform: translateX(-100%) !important; /* Force hidden on mobile */
+    }
+    
+    /* Show sidebar only when mobile-menu-active class is present */
+    .mobile-menu-active .sidebar {
+      transform: translateX(0) !important;
+    }
+    
+    /* Show mobile menu toggle */
+    .mobile-menu-toggle {
+      display: block;
+    }
+    
+    /* Show overlay when menu is active */
+    .mobile-menu-active .mobile-menu-overlay {
+      display: block;
+      opacity: 1;
+    }
+    
+    /* Reset content wrapper margin */
+    .authenticated .content-wrapper,
+    .store-name-container.move-up ~ .sidebar-container ~ .content-wrapper {
+      margin-left: 0;
+    }
+    
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      padding: 1rem;
+      gap: 1.5rem;
+    }
+    
+    .product-card {
+      padding: 1.5rem;
+    }
+    
+    /* Fix cart display on mobile */
+    .cart-container {
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
+    }
+    
+    /* Ensure cart items don't get cut off */
+    .cart-items {
+      max-height: 30vh;
+    }
+  }
+  
+  /* Additional mobile adjustments for very small screens */
+  @media screen and (max-width: 576px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    
+    .product-card {
+      padding: 1rem;
+    }
+    
+    .product-title {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .product-price {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-menu-toggle {
+      top: 10px;
+      left: 10px;
+      padding: 6px 10px;
+    }
+  }
+  
+  /* Handle device orientation */
+  @media screen and (orientation: landscape) and (max-height: 500px) {
+    .sidebar {
+      padding-top: 60px;
+    }
+    
+    .sidebar-nav li {
+      padding: 0.5rem 1.5rem;
+    }
+    
+    .cart-items {
+      max-height: 100px;
+    }
+  }
+  
+  /* Fix for potential overflow issues */
+  html, body {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Animation for mobile menu */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
