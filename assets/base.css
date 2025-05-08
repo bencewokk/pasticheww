@@ -12,6 +12,15 @@
       display: flex;
       flex-direction: column;
       transition: background-color 0.5s ease, color 0.5s ease;
+      width: 1200px; /* Set your desired fixed width */
+      height: 800px; /* Set your desired fixed height */
+      margin: 0 auto;
+      overflow: auto;
+  }
+
+  html, body {
+      min-width: 1200px;
+      min-height: 800px;
   }
     
   .container {
