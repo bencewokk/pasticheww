@@ -5,7 +5,57 @@ export function loadProducts() {
       const products = data.products;
       const contentWrapper = document.getElementById('contentWrapper');
 
-      contentWrapper.innerHTML = `
+      if (products.length === 1) {
+        // Single product: show card and description side by side
+        const product = products[0];
+        const sizeButtons = product.variants
+          .map(
+            (variant) => `<button class="product-size-btn" data-variant-id="${variant.id}"${variant.available ? '' : ' disabled style=\"opacity:0.5;cursor:not-allowed;\"'}>${variant.title}${variant.available ? '' : ' (Out of stock)'}</button>`
+          )
+          .join('');
+        contentWrapper.innerHTML = `
+          <div class="product-flex-center">
+            <div class="product-card" style="animation-delay: 0s">
+              <img src="${product.images[0]?.src || ''}" alt="${product.title}" class="product-image">
+              <div class="product-details">
+                <h3 class="product-title">${product.title}</h3>
+                <p class="product-price">Ft ${Math.round(product.variants[0]?.price || 0).toLocaleString('en-US')}</p>
+                <div class="product-size-btn-group">${sizeButtons}</div>
+                <button class="product-buy-now" style="display:none;" data-product-id="">Buy Now</button>
+              </div>
+            </div>
+            <div class="product-description-side">
+              <h4>Description</h4>
+              <div>${product.body_html || ''}</div>
+            </div>
+          </div>
+        `;
+        // Size button selection logic
+        const sizeBtns = document.querySelectorAll('.product-size-btn');
+        const buyNowBtn = document.querySelector('.product-buy-now');
+        if (sizeBtns.length && buyNowBtn) {
+          sizeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+              sizeBtns.forEach(b => b.removeAttribute('data-selected'));
+              this.setAttribute('data-selected', 'true');
+              buyNowBtn.dataset.productId = this.dataset.variantId;
+              buyNowBtn.style.display = 'block';
+            });
+          });
+          // No size selected by default
+          buyNowBtn.style.display = 'none';
+          buyNowBtn.dataset.productId = '';
+          buyNowBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const variantId = this.dataset.productId;
+            if (variantId) {
+              window.location.href = `/cart/${variantId}:1?checkout`;
+            }
+          });
+        }
+      } else {
+        // Multiple products: show grid
+        contentWrapper.innerHTML = `
           <div class="product-grid">
             ${products
               .map(
@@ -23,6 +73,7 @@ export function loadProducts() {
               .join('')}
           </div>
         `;
+      }
 
       initializeProductEventListeners();
     });
