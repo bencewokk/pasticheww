@@ -63,6 +63,21 @@
   font-size: 5rem;
 }
 
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.site-logo {
+  max-width: 120px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  display: block;
+}
+
 /* Responsive styles for header elements */
 @media screen and (max-width: 1200px) {
   .store-name-outline {
@@ -95,6 +110,14 @@
   .store-name-container.move-up .store-name-outline,
   .store-name-container.move-up .store-name-filled {
     font-size: 3rem;
+  }
+
+  .site-logo {
+    max-width: 80px;
+    max-height: 40px;
+  }
+  .logo-container {
+    margin-bottom: 0.3rem;
   }
 }
 

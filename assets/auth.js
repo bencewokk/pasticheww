@@ -1,4 +1,4 @@
-const PASSWORD = 'teszt';
+const PASSWORD = 'YUNG2025';
 const storeNameContainer = document.getElementById('storeNameContainer');
 const passwordContainer = document.getElementById('passwordContainer');
 const passwordInput = document.getElementById('passwordInput');

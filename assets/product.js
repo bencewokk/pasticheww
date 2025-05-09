@@ -58,6 +58,39 @@ export function loadProducts() {
             imgEl.src = images[currentIdx].src;
             imgEl.setAttribute('data-index', currentIdx);
           });
+
+          // Auto-cycle every 2.5 seconds
+          setInterval(() => {
+            currentIdx = (currentIdx + 1) % images.length;
+            imgEl.src = images[currentIdx].src;
+            imgEl.setAttribute('data-index', currentIdx);
+          }, 10000);
+
+          // Swipe support for mobile
+          let startX = null;
+          imgEl.addEventListener('touchstart', function (e) {
+            if (e.touches && e.touches.length === 1) {
+              startX = e.touches[0].clientX;
+            }
+          });
+          imgEl.addEventListener('touchend', function (e) {
+            if (startX === null) return;
+            const endX = e.changedTouches[0].clientX;
+            const diffX = endX - startX;
+            if (Math.abs(diffX) > 40) {
+              // Minimum swipe distance
+              if (diffX < 0) {
+                // Swipe left: next image
+                currentIdx = (currentIdx + 1) % images.length;
+              } else {
+                // Swipe right: previous image
+                currentIdx = (currentIdx - 1 + images.length) % images.length;
+              }
+              imgEl.src = images[currentIdx].src;
+              imgEl.setAttribute('data-index', currentIdx);
+            }
+            startX = null;
+          });
         }
         // Size button selection logic
         const sizeBtns = document.querySelectorAll('.product-size-btn');
