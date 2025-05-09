@@ -38,12 +38,12 @@
   }
     
   .content-wrapper {
-      flex: 1;
+      flex: 1 0 auto;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 0;
-      height: 100vh;
+      height: calc(100vh - 120px); /* Adjust 120px to header+footer height */
   }
     
   .background-particles {
@@ -62,6 +62,10 @@
       color: #ff6666;
       text-align: center;
       margin-top: 2rem;
+  }
+
+  .created-by {
+      flex-shrink: 0;
   }
   
   /* Responsive styles */
