@@ -21,4 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof loadProducts === 'function') loadProducts();
     if (typeof fetchCart === 'function') fetchCart();
   }
+
+  // Dynamically load git info for the footer
+  fetch('{{ "gitinfo.json" | asset_url }}')
+    .then((res) => res.json())
+    .then((data) => {
+      const footer = document.querySelector('.footer-minimal');
+      if (footer && data.hash && data.date) {
+        footer.innerHTML = `Commit: ${data.hash} · ${data.date}`;
+      }
+    });
 });
