@@ -1,4 +1,4 @@
-const PASSWORD = 'YUNG2025';
+const PASSWORD = 'teszt';
 const storeNameContainer = document.getElementById('storeNameContainer');
 const passwordContainer = document.getElementById('passwordContainer');
 const passwordInput = document.getElementById('passwordInput');
@@ -9,6 +9,12 @@ const sidebarContainer = document.getElementById('sidebarContainer');
 let isPasswordVisible = false;
 
 export function initializeAuth(onSuccessCallback) {
+  // When authenticated, swap logo to logodark.png
+  if (sessionStorage.getItem('siteAccess') === 'granted') {
+    const siteLogo = document.getElementById('siteLogo');
+    if (siteLogo) siteLogo.src = siteLogo.src.replace('logo.png', 'logodark.png');
+  }
+
   // Password validation
   function checkPassword() {
     if (passwordInput.value === PASSWORD) {
@@ -17,6 +23,9 @@ export function initializeAuth(onSuccessCallback) {
       contentWrapper.style.display = 'block';
       document.body.classList.add('authenticated');
       document.documentElement.style.setProperty('--invert-filter', '100%');
+      // Swap logo to logodark.png
+      const siteLogo = document.getElementById('siteLogo');
+      if (siteLogo) siteLogo.src = siteLogo.src.replace('logo.png', 'logodark.png');
       onSuccessCallback();
     } else {
       passwordError.style.display = 'block';

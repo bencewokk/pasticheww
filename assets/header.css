@@ -20,11 +20,17 @@
 .store-name-container.move-up {
   position: fixed;
   top: 1rem;
-  left: -5rem;
-  transform: translate(0, 0) scale(0.5);
+  left: 1rem; /* Move logo to the left */
+  right: auto;
+  transform: translate(0, 0); /* Keep original size */
   padding: 0;
 }
 
+.store-name-container.move-up .store-name-outline,
+.store-name-container.move-up .store-name-filled {
+  font-size: 10rem; /* Keep the same size as default */
+  -webkit-text-stroke-width: 1px;
+}
   
 .store-name-outline {
   font-size: 10rem;
@@ -35,11 +41,6 @@
   -webkit-text-stroke: 1px var(--text-color);
   color: transparent;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-  
-.store-name-container.move-up .store-name-outline {
-  font-size: 5rem;
-  -webkit-text-stroke-width: 1px;
 }
   
 .store-name-filled {
@@ -57,10 +58,6 @@
   pointer-events: none;
   transition: opacity 0.1s ease-out;
   z-index: 0;
-}
-
-.store-name-container.move-up .store-name-filled {
-  font-size: 5rem;
 }
 
 .logo-container {
@@ -102,10 +99,7 @@
   .store-name-filled {
     font-size: 6rem;
   }
-  
-  .store-name-container.move-up {
-    left: -3rem;
-  }
+
   
   .store-name-container.move-up .store-name-outline,
   .store-name-container.move-up .store-name-filled {
@@ -133,11 +127,6 @@
   
   .store-name-container {
     padding: 1rem;
-  }
-  
-  .store-name-container.move-up {
-    left: -2rem;
-    top: 0.5rem;
   }
   
   .store-name-container.move-up .store-name-outline,

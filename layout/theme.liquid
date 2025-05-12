@@ -13,11 +13,10 @@
 
     <header class="header">
       <div class="store-name-container" id="storeNameContainer">
-        <h1 class="store-name-outline">{{ shop.name }}</h1>
-        <h1 class="store-name-filled" id="storeNameFilled">{{ shop.name }}</h1>
+        <img src="{{ 'logo.png' | asset_url }}" alt="Logo" class="site-logo" id="siteLogo" width="120" height="60">
+        <span id="storeNameFilled" class="store-name-filled"></span>
       </div>
 
-      <!-- Move password container outside store-name-container -->
       <div class="password-container" id="passwordContainer">
         <input
           type="password"
