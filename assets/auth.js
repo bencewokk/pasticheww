@@ -49,16 +49,20 @@ export function initializeAuth(onSuccessCallback) {
     document.documentElement.style.setProperty('--invert-filter', '100%');
     onSuccessCallback();
   }
-
-  // Title click handler
+  // Title click handler - now integrated with newsletter flow
   storeNameContainer.addEventListener('click', () => {
     if (!isPasswordVisible && sessionStorage.getItem('siteAccess') !== 'granted') {
-      storeNameContainer.classList.add('move-up');
-      setTimeout(() => {
-        passwordContainer.classList.add('visible');
-        passwordInput.focus();
-      }, 250);
-      isPasswordVisible = true;
+      // Check if newsletter step is complete
+      if (sessionStorage.getItem('newsletterComplete') === 'true') {
+        // Show password prompt directly
+        storeNameContainer.classList.add('move-up');
+        setTimeout(() => {
+          passwordContainer.classList.add('visible');
+          passwordInput.focus();
+        }, 250);
+        isPasswordVisible = true;
+      }
+      // Newsletter will handle the initial click if not complete
     }
   });
 }

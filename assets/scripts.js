@@ -2,12 +2,19 @@ import { initializeAuth } from './auth.js';
 import { loadProducts } from './product.js'; // Note: your file is product.js not products.js
 import { fetchCart } from './cart.js';
 import { initializeParticles } from './particles.js';
+import { initializeNewsletter } from './newsletter.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize components in the correct order
   if (typeof initializeParticles === 'function') {
     initializeParticles();
     console.log('Particles initialized');
+  }
+
+  // Initialize newsletter functionality
+  if (typeof initializeNewsletter === 'function') {
+    initializeNewsletter();
+    console.log('Newsletter initialized');
   }
 
   // Handle authentication if function exists
