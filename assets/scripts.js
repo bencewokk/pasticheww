@@ -3,6 +3,7 @@ import { loadProducts } from './product.js'; // Note: your file is product.js no
 import { fetchCart } from './cart.js';
 import { initializeParticles } from './particles.js';
 import { initializeNewsletter } from './newsletter.js';
+import { initializeSplitParticles } from './split-particles.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize components in the correct order
@@ -15,18 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof initializeNewsletter === 'function') {
     initializeNewsletter();
     console.log('Newsletter initialized');
-  }
-
-  // Handle authentication if function exists
+  }  // Handle authentication if function exists
   if (typeof initializeAuth === 'function') {
     initializeAuth(() => {
-      if (typeof loadProducts === 'function') loadProducts();
+      // Product loading disabled
       if (typeof fetchCart === 'function') fetchCart();
+      // Initialize split particles after authentication
+      if (typeof initializeSplitParticles === 'function') {
+        setTimeout(() => initializeSplitParticles(), 500);
+      }
     });
   } else {
     // Fallback if auth not available
-    if (typeof loadProducts === 'function') loadProducts();
+    // Product loading disabled
     if (typeof fetchCart === 'function') fetchCart();
+    if (typeof initializeSplitParticles === 'function') {
+      setTimeout(() => initializeSplitParticles(), 500);
+    }
   }
 
   // Dynamically load git info for the footer

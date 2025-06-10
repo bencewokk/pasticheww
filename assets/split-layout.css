@@ -1,0 +1,208 @@
+/* Split Layout Styles */
+.split-layout {
+  display: none; /* Hidden by default (not authenticated) */
+  height: 100vh;
+  width: 100%;
+}
+
+/* Show split layout only when authenticated */
+.authenticated .split-layout {
+  display: flex;
+  flex-direction: row; /* Vertical split (side by side) */
+}
+
+.split-left,
+.split-right {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+}
+
+.split-right {
+  background-color: #111111;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Interactive neon green background for right section */
+.split-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(0, 255, 127, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(57, 255, 20, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(0, 255, 127, 0.06) 0%, transparent 50%);
+  opacity: 0.3;
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.split-right:hover::before {
+  opacity: 0.5;
+  transform: scale(1.1);
+}
+
+.split-left {
+  border-right: 1px solid var(--text-color);
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+/* Miami Vice background effects for left section */
+.split-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 70% 20%, rgba(255, 0, 128, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 30% 80%, rgba(0, 255, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(128, 0, 255, 0.05) 0%, transparent 50%);
+  opacity: 0.4;
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.split-left:hover::before {
+  opacity: 0.6;
+  transform: scale(1.05);
+}
+
+.split-content {
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.split-content h2 {
+  color: var(--text-color);
+  font-weight: 300;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.split-content p {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+/* Right section stays in dark mode */
+.split-right .split-content h2,
+.split-right .split-content p {
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+}
+
+.split-right .split-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Left section Miami Vice effects */
+.split-left .split-content {
+  position: relative;
+  z-index: 2;
+}
+
+.split-left .split-content h2 {
+  background: linear-gradient(45deg, #ff0080, #00ffff, #8000ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+  transition: text-shadow 0.3s ease;
+}
+
+.split-left .split-content h2:hover {
+  text-shadow: 0 0 25px rgba(255, 0, 128, 0.6), 0 0 35px rgba(0, 255, 255, 0.4);
+}
+
+/* Interactive neon glow effects */
+.split-right .split-content h2 {
+  text-shadow: 0 0 10px rgba(0, 255, 127, 0.3);
+  transition: text-shadow 0.3s ease;
+}
+
+.split-right .split-content h2:hover {
+  text-shadow: 0 0 20px rgba(0, 255, 127, 0.6), 0 0 30px rgba(0, 255, 127, 0.4);
+}
+
+/* Animated cursor trail effect */
+.split-right {
+  cursor: crosshair;
+}
+
+@keyframes neonPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes miamiPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+.split-right::before {
+  animation: neonPulse 4s ease-in-out infinite;
+}
+
+.split-left::before {
+  animation: miamiPulse 3s ease-in-out infinite;
+}
+
+/* Responsive - horizontal split on mobile (later) */
+@media screen and (max-width: 768px) {
+  .authenticated .split-layout {
+    flex-direction: column; /* Horizontal split (top/bottom) on mobile */
+  }
+  
+  .split-left {
+    border-right: none;
+    border-bottom: 1px solid var(--text-color);
+  }
+  
+  .split-content {
+    padding: 1.5rem;
+  }
+  
+  .split-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .split-content p {
+    font-size: 1rem;
+  }
+}
+
+/* Ensure content wrapper takes full height when authenticated */
+.authenticated .content-wrapper {
+  height: 100vh;
+  padding: 0;
+  display: flex !important;
+}
+
+.authenticated .container {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  height: 100%;
+  display: block;
+}
