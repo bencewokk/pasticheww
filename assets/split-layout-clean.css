@@ -24,7 +24,7 @@
 .split-left {
   background: var(--bg-color);
   border-right: 3px solid;
-  border-image: linear-gradient(45deg, #ff0080, #00ffff, #8000ff, #00ff7f) 1;
+  border-image: linear-gradient(45deg, #ff0080, #00ffff, #8000ff) 1;
 }
 
 .split-right {
@@ -143,7 +143,7 @@
   .split-left {
     border-right: none;
     border-bottom: 3px solid;
-    border-image: linear-gradient(90deg, #ff0080, #00ffff, #8000ff, #00ff7f) 1;
+    border-image: linear-gradient(90deg, #ff0080, #00ffff, #8000ff) 1;
   }
   
   .split-left::after {
@@ -156,8 +156,7 @@
     transform: translateX(-50%);
     background: linear-gradient(90deg, #ff0080, #00ff7f);
   }
-  
-  .split-content {
+    .split-content {
     padding: 2rem 1.5rem;
   }
   
@@ -167,6 +166,63 @@
   
   .split-content p {
     font-size: 1rem;
+  }
+  
+  .section-header {
+    margin-bottom: 2rem;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .section-header p {
+    font-size: 1rem;
+  }
+    .product-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .product-controls {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .product-title {
+    text-align: center;
+  }
+  
+  .buy-btn {
+    align-self: center;
+  }
+  
+  .product-image {
+    max-width: 120px;
+    max-height: 120px;
+  }
+  
+  .product-title {
+    font-size: 1.1rem;
+  }
+  
+  .product-price {
+    font-size: 1rem;
+  }
+  
+  .size-selector {
+    gap: 0.3rem;
+  }
+  
+  .size-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .buy-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
   }
   
   @keyframes connectionPulse {
@@ -194,4 +250,234 @@
   padding: 0;
   height: 100%;
   display: block;
+}
+
+/* Section header styling */
+.section-header {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.section-header h2 {
+  font-weight: 300;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.section-header p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Product display styling */
+.product-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 400px;
+  position: relative;
+  z-index: 3;
+}
+
+.product-layout {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.product-image {
+  max-width: 150px;
+  max-height: 150px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.product-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.product-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+}
+
+.product-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-color);
+  text-align: left;
+}
+
+.size-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.size-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-color);
+  background: transparent;
+  color: var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  min-width: 40px;
+}
+
+.size-btn:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
+.size-btn.selected {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
+.buy-btn {
+  padding: 0.8rem 2rem;
+  background: var(--text-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0;
+  align-self: flex-start;
+}
+
+.buy-btn:hover {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+}
+
+/* Left section - Miami Vice styling */
+.split-left .section-header h2 {
+  background: linear-gradient(45deg, #ff0080, #00ffff, #8000ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 0, 128, 0.4);
+}
+
+.split-left .section-header h2:hover {
+  text-shadow: 0 0 30px rgba(255, 0, 128, 0.7), 0 0 40px rgba(0, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.split-left .section-header p {
+  color: var(--text-color);
+}
+
+.split-left .product-image {
+  box-shadow: 0 4px 12px rgba(255, 0, 128, 0.2);
+}
+
+.split-left .product-image:hover {
+  box-shadow: 0 8px 24px rgba(255, 0, 128, 0.3), 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.split-left .size-btn:hover {
+  background: linear-gradient(45deg, #ff0080, #00ffff);
+  color: #ffffff;
+  border-color: #ff0080;
+}
+
+.split-left .buy-btn {
+  background: linear-gradient(45deg, #ff0080, #00ffff);
+  border: none;
+  color: #ffffff;
+}
+
+.split-left .buy-btn:hover {
+  background: var(--bg-color);
+  color: #ff0080;
+  border: 1px solid #ff0080;
+}
+
+/* Right section - Neon green styling */
+.split-right .section-header h2,
+.split-right .section-header p {
+  color: #ffffff;
+}
+
+.split-right .section-header h2 {
+  text-shadow: 0 0 15px rgba(0, 255, 127, 0.4);
+}
+
+.split-right .section-header h2:hover {
+  text-shadow: 0 0 25px rgba(0, 255, 127, 0.7), 0 0 35px rgba(0, 255, 127, 0.5);
+  transform: scale(1.05);
+}
+
+.split-right .product-title,
+.split-right .product-price {
+  color: #ffffff;
+}
+
+.split-right .product-image {
+  box-shadow: 0 4px 12px rgba(0, 255, 127, 0.2);
+}
+
+.split-right .product-image:hover {
+  box-shadow: 0 8px 24px rgba(0, 255, 127, 0.3), 0 0 20px rgba(0, 255, 127, 0.2);
+}
+
+.split-right .size-btn {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.split-right .size-btn:hover {
+  background: #00ff7f;
+  color: #111111;
+  border-color: #00ff7f;
+}
+
+.split-right .buy-btn {
+  background: #00ff7f;
+  color: #111111;
+}
+
+.split-right .buy-btn:hover {
+  background: transparent;
+  color: #00ff7f;
+  border: 1px solid #00ff7f;
+}
+
+/* Mobile responsive placeholder image styles */
+@media screen and (max-width: 768px) {
+  .placeholder-image {
+    max-width: 150px;
+    max-height: 150px;
+    margin-bottom: 1.5rem;
+  }
 }

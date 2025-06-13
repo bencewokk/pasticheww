@@ -206,3 +206,41 @@
   height: 100%;
   display: block;
 }
+
+/* Placeholder image styling */
+.placeholder-image {
+  max-width: 150px;
+  max-height: 150px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 3;
+}
+
+.placeholder-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Left section placeholder - Miami Vice glow */
+.split-left .placeholder-image {
+  box-shadow: 0 4px 12px rgba(255, 0, 128, 0.2);
+}
+
+.split-left .placeholder-image:hover {
+  box-shadow: 0 8px 24px rgba(255, 0, 128, 0.3), 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+/* Right section placeholder - Neon green glow */
+.split-right .placeholder-image {
+  box-shadow: 0 4px 12px rgba(0, 255, 127, 0.2);
+}
+
+.split-right .placeholder-image:hover {
+  box-shadow: 0 8px 24px rgba(0, 255, 127, 0.3), 0 0 20px rgba(0, 255, 127, 0.2);
+}
